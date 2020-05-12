@@ -4,14 +4,19 @@
  * @version 1.00 - May 5, 2020
  */
 
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
-public class TaskManagerGUI {
+public class TaskManagerGUI extends JFrame {
     
     /** title within GUI */
     private JLabel title;
@@ -59,4 +64,32 @@ public class TaskManagerGUI {
     
     /** allow for scrolling through TaskList */
     private JScrollPane scrollTaskList;
+    
+    /** used for overall GUI */
+    private BorderLayout border = new BorderLayout(); 
+    
+    /** used for left half of GUI */
+    private GridBagLayout bag = new GridBagLayout();
+    
+    /** used to add spacing for neatness */
+    private GridBagConstraints pad = new GridBagConstraints();
+    
+    /** data structure to hold the Task objects */
+    private ArrayList<Task> tasks = new ArrayList<Task>();
+    
+    /** configure the GUI properly */
+    private void configureGUI() {
+        // implement this
+    }
+    
+    /** display the GUI */
+    public static void main(String[] args) {
+        TaskManagerGUI applet = new TaskManagerGUI();
+        applet.setTitle("PhotoViewer GUI");
+        applet.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        applet.setLayout(new BorderLayout(25,25));
+        javax.swing.SwingUtilities.invokeLater(()->applet.configureGUI());
+        applet.setSize(750,750);
+        applet.setVisible(true);
+    }
 }
