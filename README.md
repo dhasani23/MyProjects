@@ -1,2 +1,2 @@
 # MyProjects
-Personal
+Personal projects created in a variety of languages
