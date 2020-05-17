@@ -3,7 +3,7 @@
  * This Task class features components of a Task object to be used in the TaskList application. A Task
  * object has a name, an estimated time to complete, and a type (time of day).
  * @author David Hasani
- * @version 1.00 2020/05/08
+ * @version 1.00 - May 15, 2020
  */
 
 public class Task {
@@ -21,9 +21,9 @@ public class Task {
      *  Use trim() to facilitate searching for Tasks by eliminating white space 
      */
     public Task(String tName, int tTime, String tType) {
-        name = tName.trim();
+        name = tName;
         time = tTime;
-        type = tType.trim();
+        type = tType;
     }
 
     /**
