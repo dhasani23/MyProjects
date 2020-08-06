@@ -362,13 +362,7 @@ if __name__ == '__main__':
     print(len(list_locs))
     print(len(list_emails))
     
-    write_json(assemble_authors(), '/Users/david/Desktop/Privacy/UserInfo.json', 'w')   
-
-    #get all post data
-
-    url = 'https://www.doctorslounge.com/forums/viewforum.php?f=72' #replace this with the url of each index to crawl the entire website
-    #crawl_one_index(url)
-    crawl_entire_index(url)
+    write_json(assemble_authors(), '/Users/david/Desktop/Privacy/UserInfo.json', 'w')
     
     #extract category and subcategory
     cat = list_path[2]
