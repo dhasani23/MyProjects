@@ -1,6 +1,6 @@
 '''
 July 2020
-
+Classes used to store the data in JSON format
 @author: David Hasani
 '''
 
