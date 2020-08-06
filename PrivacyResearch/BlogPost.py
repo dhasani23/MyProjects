@@ -1,11 +1,12 @@
 '''
 July 2020
 
-Classes used to write data in JSON files
-
 @author: David Hasani
 '''
 
+from json import JSONEncoder
+
+#BlogPost class
 class BlogPost:
     author = None
     title = None
@@ -22,7 +23,13 @@ class BlogPost:
         self.category = category
         self.sub_category = sub_category
         self.url = url
+        
+#subclass JSONEncoder
+class CustomEncoder(JSONEncoder):
+        def default(self, o):
+            return o.__dict__
 
+#Author class
 class Author:
     name = ''
     profile_link = ''
