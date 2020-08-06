@@ -1,5 +1,5 @@
 '''
-File created in July 2020
+July 2020
 
 Used to crawl the discussion forums of https://www.doctorslounge.com
 
