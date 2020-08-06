@@ -353,7 +353,7 @@ if __name__ == '__main__':
     write_json(assemble_blog_posts(), '/Users/david/Desktop/Privacy/' + subcat + '.json', 'w')
     
 '''
-    #Comment and Un-Comment lines as needed
+    #Comment and Un-Comment lines as needed to perform tasks
 
     #map the posts to the pictures
     write_json(list_obj, '/Users/david/Desktop/Privacy/Post_To_Picture_Mapping.json', 'w')
