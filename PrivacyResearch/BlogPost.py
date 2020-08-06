@@ -15,6 +15,7 @@ class BlogPost:
     category = None
     sub_category = None
     url = None
+    
     def __init__(self, author, title, content, posted_time, category, sub_category, url):
         self.author = author
         self.title = title
