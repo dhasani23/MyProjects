@@ -58,6 +58,9 @@ list_profiles = []
 list_text = []
 list_path = []
 list_url = []
+list_post_url = []
+list_image_url = []
+list_obj = []
 def crawl_post_page(url):
     soup = make_soup(url)
     all_titles = soup.find_all('h3')
@@ -98,12 +101,35 @@ def crawl_post_page(url):
     for u in all_url:
         list_url.append('https://www.doctorslounge.com/forums' + u.get('href')[1:])
         
-    #discard meaningless values
+    all_post_authors = soup.find_all('p', class_='author')
+    for a in all_post_authors:
+        content = a.find_next_sibling('div', class_='content')
+        if content is not None:
+            for link in content.find_all('a', class_='postlink'):
+                web = link.get('href').lower()
+                if ('.jpg' in web or '.jpeg' in web or '.gif' in web or '.png' in web or '.raw' in web or '.tif' in web):
+                    list_image_url.append(link.get('href'))
+                    href = a.find('a', class_='unread').get('href')
+                    href = href[href.index('#p'):]
+                    list_post_url.append(href)
+                    obj = PostPic(post_num=href, pic_url=link.get('href'))
+                    list_obj.append(obj)
+            for link in content.find_all('img', class_='postimage'):
+                list_image_url.append(link.get('src'))
+                href = a.find('a', class_='unread').get('href')
+                href = href[href.index('#p'):]
+                list_post_url.append(href)
+                obj = PostPic(post_num=href, pic_url=link.get('src'))
+                list_obj.append(obj)
+            
+    #discard any meaningless values
     clean_up(list_titles)
     clean_up(list_times)
     clean_up(list_text)
     clean_up(list_url)
     clean_up(list_profiles)
+    clean_up(list_post_url)
+    clean_up(list_image_url)
     
 #check if there are multiple pages of posts within this webpage
 def check_num_pages(url):
