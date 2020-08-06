@@ -24,7 +24,7 @@ class BlogPost:
         self.sub_category = sub_category
         self.url = url
         
-#subclass JSONEncoder
+#JSONEncoder class
 class CustomEncoder(JSONEncoder):
         def default(self, o):
             return o.__dict__
