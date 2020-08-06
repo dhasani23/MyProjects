@@ -1,4 +1,8 @@
-#class to map the post number to the image(s) found within
+'''
+July 2020
+Class to map posts to pictures
+@author David Hasani
+'''
 class PostPic:
     post_num = -1
     pic_url = ""
