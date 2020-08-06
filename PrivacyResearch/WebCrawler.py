@@ -326,10 +326,31 @@ def save_pics(file):
 #start the crawling
 if __name__ == '__main__':
     
+    crawl_all('https://www.doctorslounge.com/forums/index.php')
+    
+    #extract category and subcategory
+    cat = list_path[2]
+    subcat = list_path[3]
+    
     list_cat = []
     list_subcat = []
     
-    crawl_all('https://www.doctorslounge.com/forums/index.php')
+    #populate lists with correct number of elements
+    while not (len(list_cat) == len(list_url)):
+        list_cat.append(cat)
+        list_subcat.append(subcat)
+    
+    #remove unneeded polls in some posts
+    for a in list_text:
+        if('Your vote has been cast' in a):
+            list_text.remove(a)
+    
+    for b in list_times:
+        if('Poll ended at' in b):
+            list_times.remove(b)
+            
+    #combine lists and write data
+    write_json(assemble_blog_posts(), '/Users/david/Desktop/Privacy/' + subcat + '.json', 'w')
     
 '''
     #Comment and Un-Comment lines as needed
@@ -363,27 +384,6 @@ if __name__ == '__main__':
     print(len(list_emails))
     
     write_json(assemble_authors(), '/Users/david/Desktop/Privacy/UserInfo.json', 'w')
-    
-    #extract category and subcategory
-    cat = list_path[2]
-    subcat = list_path[3]
-    
-    list_cat = []
-    list_subcat = []
-    
-    #populate lists with correct number of elements
-    while not (len(list_cat) == len(list_url)):
-        list_cat.append(cat)
-        list_subcat.append(subcat)
-    
-    #remove unneeded polls in some posts
-    for a in list_text:
-        if('Your vote has been cast' in a):
-            list_text.remove(a)
-    
-    for b in list_times:
-        if('Poll ended at' in b):
-            list_times.remove(b)
                     
     print('\nCategory:    ' + str(len(list_cat)))
     print('Subcategory: ' + str(len(list_subcat)))
@@ -392,7 +392,4 @@ if __name__ == '__main__':
     print('Title:       ' + str(len(list_titles)))
     print('Time:        ' + str(len(list_times)))
     print('Post:        ' + str(len(list_text)))
-    
-    #combine lists and write data
-    write_json(assemble_blog_posts(), '/Users/david/Desktop/Privacy/' + subcat + '.json', 'w')
 '''
