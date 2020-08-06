@@ -29,6 +29,7 @@ import fnmatch
 from json import JSONEncoder
 from json import JSONEncoder
 from constant import *
+from PostPic import *
 
 #write the data in JSON
 def write_json(data:list, filename:str, typ:str) -> None:
@@ -100,7 +101,8 @@ def crawl_post_page(url):
     all_url = soup.find_all('a', class_='unread')
     for u in all_url:
         list_url.append('https://www.doctorslounge.com/forums' + u.get('href')[1:])
-        
+    
+    #get all images
     all_post_authors = soup.find_all('p', class_='author')
     for a in all_post_authors:
         content = a.find_next_sibling('div', class_='content')
@@ -302,6 +304,24 @@ def crawl_all(url):
     for u in list_forums:
         link = 'http://www.doctorslounge.com/forums' + u.get('href')[1:]
         crawl_entire_index(link)
+
+#save the pictures
+def save_pics(file):
+    f = open(file)
+    data = json.load(f)
+    for d in data:
+        url = d['pic_url']
+        if url[-4:].lower() == '.jpg' or url[-4:].lower() == 'jpeg' or url[-4:].lower() == '.gif' or url[-4:].lower() == '.bmp' or url[-4:].lower() == '.png':
+            try:
+                print(urlretrieve(url, d['post_num']))
+            except FileNotFoundError as err:
+                print(err)   # something wrong with local path
+            except HTTPError as err:
+                print(err)  # something wrong with url
+            except URLError as err:
+                print(err)
+            except ValueError as err:
+                print(err)
         
 #start the crawling
 if __name__ == '__main__':
@@ -311,8 +331,17 @@ if __name__ == '__main__':
     
     crawl_all('https://www.doctorslounge.com/forums/index.php')
     
-    #get all user info
 '''
+    #Comment and Un-Comment lines as needed
+
+    #map the posts to the pictures
+    write_json(list_obj, '/Users/david/Desktop/Privacy/Post_To_Picture_Mapping.json', 'w')
+
+    #save pictures to Desktop
+    os.chdir('C:/Users/david/Desktop/Privacy/Pictures')
+    save_pics('C:/Users/david/Desktop/Privacy/Post_To_Picture_Mapping.json')
+
+    #get all user info
     url = 'https://www.doctorslounge.com/forums/memberlist.php'
     crawl_authors(url)
     
