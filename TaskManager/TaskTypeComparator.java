@@ -1,5 +1,5 @@
 /**
- * Comparator for Task objects by type aka time of day
+ * Comparator for Task objects by type (time of day)
  * Sort as morning before afternoon before evening before anytime
  * @author David Hasani
  * @version 1.00 - May 15, 2020
