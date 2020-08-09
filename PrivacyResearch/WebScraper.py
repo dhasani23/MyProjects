@@ -24,6 +24,9 @@ from BlogPost import *
 import os
 import smtplib
 from smtplib import SMTPException
+from urllib.error import HTTPError
+from urllib.error import URLError
+from urllib.request import urlretrieve
 from datetime import datetime
 import fnmatch
 from json import JSONEncoder
