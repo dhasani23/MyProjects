@@ -14,25 +14,21 @@ import bs4
 import re
 import urllib
 import urllib.request
-import os
 import math
 import sys
 import io
 import json
-from settings import *
 from BlogPost import *
 import os
 import smtplib
 from smtplib import SMTPException
-from urllib.error import HTTPError
-from urllib.error import URLError
-from urllib.request import urlretrieve
 from datetime import datetime
 import fnmatch
 from json import JSONEncoder
-from json import JSONEncoder
-from constant import *
 from PostPic import *
+from urllib.error import HTTPError
+from urllib.error import URLError
+from urllib.request import urlretrieve
 
 #write the data in JSON
 def write_json(data:list, filename:str, typ:str) -> None:
