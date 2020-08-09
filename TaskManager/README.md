@@ -2,4 +2,4 @@ TaskManager applet that allows users to add, remove, and search through a list o
 Each task consists of a title, estimate time to complete, and type (morning, afternoon, evening, or anytime). 
 Tasks are continuously displayed in sorted order (by type).
 
-![](TaskManager/Screenshot.JPG?raw=true "Screenshot")
+![](/TaskManager/Screenshot.JPG)
