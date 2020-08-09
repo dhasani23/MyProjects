@@ -1,7 +1,7 @@
 '''
 July 2020
 
-Used to crawl the discussion forums of https://www.doctorslounge.com
+Used to scrape the discussion forums of https://www.doctorslounge.com
 
 @author: David Hasani
 '''
@@ -51,7 +51,7 @@ def clean_up(lst):
     while '\n' in lst:
         lst.remove('\n')
 
-#crawl one specific page of posts
+#scrape one specific page of posts
 list_titles = []
 list_times = []
 list_profiles = []
@@ -60,8 +60,8 @@ list_path = []
 list_url = []
 list_post_url = []
 list_image_url = []
-list_obj = []
-def crawl_post_page(url):
+list_postpic_obj = []
+def scrape_post_page(url):
     soup = make_soup(url)
     all_titles = soup.find_all('h3')
 
@@ -114,14 +114,14 @@ def crawl_post_page(url):
                     href = href[href.index('#p'):]
                     list_post_url.append(href)
                     obj = PostPic(post_num=href, pic_url=link.get('href'))
-                    list_obj.append(obj)
+                    list_postpic_obj.append(obj)
             for link in content.find_all('img', class_='postimage'):
                 list_image_url.append(link.get('src'))
                 href = a.find('a', class_='unread').get('href')
                 href = href[href.index('#p'):]
                 list_post_url.append(href)
                 obj = PostPic(post_num=href, pic_url=link.get('src'))
-                list_obj.append(obj)
+                list_postpic_obj.append(obj)
             
     #discard any meaningless values
     clean_up(list_titles)
@@ -142,11 +142,11 @@ def check_num_pages(url):
     if (num_pages > 1):
         start = 15
         for x in range(num_pages-1):
-            crawl_post_page(url + '&start=' + str(start))
+            scrape_post_page(url + '&start=' + str(start))
             start += 15 #each successive page (posts) adds a multiple of 15 to end of url
 
-#crawl entire topic (consisting of at least 1 page of posts)
-def crawl_one_topic(url):
+#scrape entire topic (consisting of at least 1 page of posts)
+def scrape_one_topic(url):
     crawl_post_page(url)
     check_num_pages(url)
     
@@ -160,11 +160,11 @@ def check_num_pages_in_index(url):
     if (num_pages > 1):
         start = 100
         for x in range(num_pages-1):
-            crawl_one_index(url + '&start=' + str(start))
+            scrape_one_index(url + '&start=' + str(start))
             start += 100 #each successive page (indices) adds a multiple of 100 to end of url
     
-#crawl ONE PAGE of one index of website (ex. 'Surgery Topics', 'Renal Failure', 'Diabetes', etc.); there are 96 total indices of the website
-def crawl_one_index(url):
+#scrape ONE PAGE of one index of website (ex. 'Surgery Topics', 'Renal Failure', 'Diabetes', etc.); there are 96 total indices of the website
+def scrape_one_index(url):
     soup = make_soup(url)
     all_topic_links = soup.find_all('a', class_='topictitle')
     
@@ -178,29 +178,29 @@ def crawl_one_index(url):
         list_topics.append('https://www.doctorslounge.com/forums' + t.get('href')[1:])
     
     for l in list_topics:
-        crawl_one_topic(l)
+        scrape_one_topic(l)
 
 #crawls an entire index (all pages)
-def crawl_entire_index(url):
-    crawl_one_index(url)    
+def scrape_entire_index(url):
+    scrape_one_index(url)    
     check_num_pages_in_index(url)
     
-#crawl entire website
-def crawl_all(url):
+#scrape entire website
+def scrape_all(url):
     soup = make_soup(url)
     list_forums = soup.find_all('a', class_='forumtitle')
     for u in list_forums:
         link = 'http://www.doctorslounge.com/forums' + u.get('href')[1:]
-        crawl_entire_index(link)
+        scrape_entire_index(link)
 
-#crawl one page of the authors list
+#scrape one page of the authors list
 list_usernames = []
 list_prof_links = []
 list_ranks = []
 list_num_posts = []
 list_joined_dates = []
 temp_list=[]
-def crawl_page_authors(authors_link, start):
+def scrape_page_authors(authors_link, start):
     soup = make_soup(authors_link)
     
     #extract usernames
@@ -232,21 +232,21 @@ def crawl_page_authors(authors_link, start):
         list_joined_dates.append(t)
     temp_list.clear()
 
-#crawl the entire index of authors
-def crawl_authors(url):
-    crawl_page_authors(url, 0)
+#scrape the entire index of authors
+def scrape_authors(url):
+    scrape_page_authors(url, 0)
     start = 100
     for x in range(661):
-        crawl_page_authors(url + '?&start=' + str(start), start)
+        scrape_page_authors(url + '?&start=' + str(start), start)
         start += 100
 
-#crawl each profile page of the authors
+#scrape each profile page of the authors
 list_genders = []
 list_ages = []
 list_jobs = []
 list_locs = []
 list_emails = []
-def crawl_profs(url):
+def scrape_profs(url):
     soup = make_soup(url)
     info = soup.find('dl', class_='left-box details profile-details').getText()
     
@@ -318,16 +318,12 @@ def save_pics(file):
                 print(err)
             except ValueError as err:
                 print(err)
-
-#combines lists of data
-def combine_lists(list1, list2):
-    master_list = [i + j for i, j in zip(list1, list2)]
-    return master_list
         
-#start the crawling
+#start the scraping
 if __name__ == '__main__':
     
-    crawl_all('https://www.doctorslounge.com/forums/index.php')
+    #scrape entire website
+    scrape_all('https://www.doctorslounge.com/forums/index.php')
     
     #extract category and subcategory
     cat = list_path[2]
@@ -336,7 +332,7 @@ if __name__ == '__main__':
     list_cat = []
     list_subcat = []
     
-    #populate lists with correct number of elements
+    #populate 2 above lists with correct number of elements
     while not (len(list_cat) == len(list_url)):
         list_cat.append(cat)
         list_subcat.append(subcat)
@@ -349,47 +345,23 @@ if __name__ == '__main__':
         if('Poll ended at' in b):
             list_times.remove(b)
             
-    #combine lists and write data
+    #combine lists and write data in separate files
     write_json(assemble_blog_posts(), '/Users/david/Desktop/Privacy/' + subcat + '.json', 'w')
     
 '''
     #Comment / Un-Comment lines as needed to perform tasks
 
-    #map the posts to the pictures
-    write_json(list_obj, '/Users/david/Desktop/Privacy/Post_To_Picture_Mapping.json', 'w')
+    #map the posts to the pictures 
+    write_json(list_postpic_obj, '/Users/david/Desktop/Privacy/Post_To_Picture_Mapping.json', 'w')
 
-    #save pictures to Desktop
+    #save pictures to folder (gives post number and picture link)
     os.chdir('C:/Users/david/Desktop/Privacy/Pictures')
     save_pics('C:/Users/david/Desktop/Privacy/Post_To_Picture_Mapping.json')
 
-    #get all user info
+    #get all user info and write data
     url = 'https://www.doctorslounge.com/forums/memberlist.php'
-    crawl_authors(url)
-    
-    print(len(list_usernames))
-    print(len(list_prof_links))
-    print(len(list_ranks))
-    print(len(list_num_posts))
-    print(len(list_joined_dates))
-    
-    print('\nMORE INFO:\n')
-    
+    scrape_authors(url)
     for u in list_prof_links:
-        crawl_profs('https://www.doctorslounge.com/forums' + u)
-    
-    print(len(list_genders))
-    print(len(list_ages))
-    print(len(list_jobs))
-    print(len(list_locs))
-    print(len(list_emails))
-    
-    write_json(assemble_authors(), '/Users/david/Desktop/Privacy/UserInfo.json', 'w')
-                    
-    print('\nCategory:    ' + str(len(list_cat)))
-    print('Subcategory: ' + str(len(list_subcat)))
-    print('URL:         ' + str(len(list_url)))
-    print('Author:      ' + str(len(list_profiles)))
-    print('Title:       ' + str(len(list_titles)))
-    print('Time:        ' + str(len(list_times)))
-    print('Post:        ' + str(len(list_text)))
+        scrape_profs('https://www.doctorslounge.com/forums' + u) 
+    write_json(assemble_authors(), '/Users/david/Desktop/Privacy/UserInfo.json', 'w')                    
 '''
