@@ -7,28 +7,28 @@ Used to crawl the discussion forums of https://www.doctorslounge.com
 '''
 
 #imports
-from bs4 import BeautifulSoup
-from urllib.request import Request, urlopen
-from urllib import request
 import bs4
+from bs4 import BeautifulSoup
 import re
 import urllib
+from urllib.request import urlretrieve
+from urllib.error import HTTPError
+from urllib.error import URLError
+from urllib import request
 import urllib.request
+from urllib.request import Request, urlopen
 import math
 import sys
 import io
 import json
-from BlogPost import *
+from json import JSONEncoder
 import os
 import smtplib
-from smtplib import SMTPException
-from datetime import datetime
 import fnmatch
-from json import JSONEncoder
+from BlogPost import *
 from PostPic import *
-from urllib.error import HTTPError
-from urllib.error import URLError
-from urllib.request import urlretrieve
+from datetime import datetime
+from smtplib import SMTPException
 
 #write the data in JSON
 def write_json(data:list, filename:str, typ:str) -> None:
