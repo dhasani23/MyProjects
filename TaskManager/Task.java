@@ -1,6 +1,6 @@
 /**
  * Task.java 
- * This Task class features components of a Task object to be used in the TaskList application. A Task
+ * This Task class features components of a Task object to be used in the TaskManager application. A Task
  * object has a name, an estimated time to complete, and a type (time of day).
  * @author David Hasani
  * @version 1.00 - May 15, 2020
