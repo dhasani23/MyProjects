@@ -147,7 +147,7 @@ def check_num_pages(url):
 
 #scrape entire topic (consisting of at least 1 page of posts)
 def scrape_one_topic(url):
-    crawl_post_page(url)
+    scrape_post_page(url)
     check_num_pages(url)
     
 #check if there are multiples pages within this index
