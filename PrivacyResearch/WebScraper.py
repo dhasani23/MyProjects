@@ -127,9 +127,10 @@ def crawl_post_page(url):
     #discard any meaningless values
     clean_up(list_titles)
     clean_up(list_times)
-    clean_up(list_text)
-    clean_up(list_url)
     clean_up(list_profiles)
+    clean_up(list_text)
+    clean_up(list_path)
+    clean_up(list_url)
     clean_up(list_post_url)
     clean_up(list_image_url)
     
@@ -143,7 +144,7 @@ def check_num_pages(url):
         start = 15
         for x in range(num_pages-1):
             crawl_post_page(url + '&start=' + str(start))
-            start += 15
+            start += 15 #each successive page (posts) adds a multiple of 15 to end of url
 
 #crawl entire topic (consisting of at least 1 page of posts)
 def crawl_one_topic(url):
@@ -161,7 +162,7 @@ def check_num_pages_in_index(url):
         start = 100
         for x in range(num_pages-1):
             crawl_one_index(url + '&start=' + str(start))
-            start += 100
+            start += 100 #each successive page (indices) adds a multiple of 100 to end of url
     
 #crawl ONE PAGE of one index of website (ex. 'Surgery Topics', 'Renal Failure', 'Diabetes', etc.); there are 96 total indices of the website
 def crawl_one_index(url):
@@ -170,7 +171,7 @@ def crawl_one_index(url):
     
     for a in all_topic_links:
         a2 = a.getText()
-        if 'Low Progesterone Cause of Miscarriage' in a2:
+        if 'Low Progesterone Cause of Miscarriage' in a2: #cannot access this topic (locked on site), so remove it
             all_topic_links.remove(a)
     
     list_topics = []
@@ -184,30 +185,22 @@ def crawl_one_index(url):
 def crawl_entire_index(url):
     crawl_one_index(url)    
     check_num_pages_in_index(url)
+    
+#crawl entire website
+def crawl_all(url):
+    soup = make_soup(url)
+    list_forums = soup.find_all('a', class_='forumtitle')
+    for u in list_forums:
+        link = 'http://www.doctorslounge.com/forums' + u.get('href')[1:]
+        crawl_entire_index(link)
 
-#combines lists of data
-def combine_lists(list1, list2):
-    master_list = [i + j for i, j in zip(list1, list2)]
-    return master_list
-
-#create list of BlogPost objects
-def assemble_blog_posts():
-    obj_list = []
-    x = 0
-    for t in list_times:
-        b = BlogPost(author=list_profiles[x], title=list_titles[x], content=list_text[x], posted_time=list_times[x], category=list_cat[x], sub_category=list_subcat[x], url = list_url[x])
-        obj_list.append(b)
-        x += 1
-        
-    return obj_list
-
+#crawl one page of the authors list
 list_usernames = []
 list_prof_links = []
 list_ranks = []
 list_num_posts = []
 list_joined_dates = []
 temp_list=[]
-#crawl one page of the authors list
 def crawl_page_authors(authors_link, start):
     soup = make_soup(authors_link)
     
@@ -286,7 +279,7 @@ def crawl_profs(url):
     if 'AOL:' in contact:
         email = 'AOL: ' + contact[contact.index('AOL:')+5:].strip()
     list_emails.append(email)
-
+        
 #put together the complete list of author information
 def assemble_authors():
     auth_list = []
@@ -297,13 +290,17 @@ def assemble_authors():
     
     return auth_list 
 
-#crawl entire website
-def crawl_all(url):
-    soup = make_soup(url)
-    list_forums = soup.find_all('a', class_='forumtitle')
-    for u in list_forums:
-        link = 'http://www.doctorslounge.com/forums' + u.get('href')[1:]
-        crawl_entire_index(link)
+#create list of BlogPost objects
+def assemble_blog_posts():
+    obj_list = []
+    x = 0
+    for t in list_times:
+        b = BlogPost(author=list_profiles[x], title=list_titles[x], content=list_text[x], posted_time=list_times[x], category=list_cat[x], 
+                                                                                            sub_category=list_subcat[x], url = list_url[x])
+        obj_list.append(b)
+        x += 1
+        
+    return obj_list
 
 #save the pictures
 def save_pics(file):
@@ -315,13 +312,18 @@ def save_pics(file):
             try:
                 print(urlretrieve(url, d['post_num']))
             except FileNotFoundError as err:
-                print(err)   # something wrong with local path
+                print(err)   
             except HTTPError as err:
-                print(err)  # something wrong with url
+                print(err)  
             except URLError as err:
                 print(err)
             except ValueError as err:
                 print(err)
+
+#combines lists of data
+def combine_lists(list1, list2):
+    master_list = [i + j for i, j in zip(list1, list2)]
+    return master_list
         
 #start the crawling
 if __name__ == '__main__':
@@ -343,8 +345,7 @@ if __name__ == '__main__':
     #remove unneeded polls in some posts
     for a in list_text:
         if('Your vote has been cast' in a):
-            list_text.remove(a)
-    
+            list_text.remove(a)  
     for b in list_times:
         if('Poll ended at' in b):
             list_times.remove(b)
@@ -353,7 +354,7 @@ if __name__ == '__main__':
     write_json(assemble_blog_posts(), '/Users/david/Desktop/Privacy/' + subcat + '.json', 'w')
     
 '''
-    #Comment and Un-Comment lines as needed to perform tasks
+    #Comment / Un-Comment lines as needed to perform tasks
 
     #map the posts to the pictures
     write_json(list_obj, '/Users/david/Desktop/Privacy/Post_To_Picture_Mapping.json', 'w')
