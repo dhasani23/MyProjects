@@ -271,7 +271,7 @@ public class TaskManagerGUI extends JFrame {
         bottomPan.add(clear);
         bottomPan.setOpaque(true);
         
-        welcome = new JLabel("Welcome to TaskList Manager!", SwingConstants.CENTER);
+        welcome = new JLabel("Welcome to TaskManager!", SwingConstants.CENTER);
         
         formatAll(); // format all components with Fonts
         
@@ -400,7 +400,7 @@ public class TaskManagerGUI extends JFrame {
     /** Display the GUI */
     public static void main(String[] args) {
         TaskManagerGUI applet = new TaskManagerGUI();
-        applet.setTitle("TaskList Manager");
+        applet.setTitle("TaskManager");
         applet.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         applet.setLayout(new BorderLayout());
         javax.swing.SwingUtilities.invokeLater(()->applet.configureGUI());
