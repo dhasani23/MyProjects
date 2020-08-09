@@ -1,2 +1,2 @@
 # MyProjects
-Various projects in a variety of languages.
+Various projects in some different languages.
