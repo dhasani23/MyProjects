@@ -236,7 +236,7 @@ public class TaskManagerGUI extends JFrame {
                 if (!checkEmpty("Search for S & L result:  ", " ")) { // check if list is empty
                     Task shortT = tasks.get(0);
                     Task longT = tasks.get(0);
-                    for (int i = 1; i < tasks.size(); i++) { // find shortest and longest Tasks
+                    for (int i = 1; i < tasks.size(); i++) { // find shortest and longest Tasks, if multiple Tasks with same time: finds Task that appears first in list
                         Task t1 = tasks.get(i);
                         Task t2 = tasks.get(i);
                         if (t1.getTime() < shortT.getTime()) {
