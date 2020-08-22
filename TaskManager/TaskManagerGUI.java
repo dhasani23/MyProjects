@@ -77,22 +77,22 @@ public class TaskManagerGUI extends JFrame {
     /** Where to select when to do the Task; chosen from morning, afternoon, evening, anytime */
     private JComboBox<String> typeBox;
     
-    /** Adds a Task to TaskList; name, time, & type must be filled out */
+    /** Adds a Task to Task List; name, time, & type must be filled out */
     private JButton add;
     
-    /** Removes a Task from TaskList; uses only the name supplied
+    /** Removes a Task from Task List; uses only the name supplied
      *  If > 1 Task with same name present, first one (by type aka time of day) is removed
      */
     private JButton remove;
     
-    /** Checks if a Task is in TaskList; uses only the name supplied
+    /** Checks if a Task is in Task List; uses only the name supplied
      *  If > 1 Task with same name present, first one (by type aka time of day) is displayed
      */
     private JButton search;
     
     /**
      * Searches for the Tasks with smallest and largest time values
-     * If only 1 Task is in TaskList, it is both the shortest and longest
+     * If only 1 Task is in Task List, it is both the shortest and longest
      * If Tasks share a time value, the first Task is chosen
      */
     private JButton searchSL;
@@ -100,10 +100,10 @@ public class TaskManagerGUI extends JFrame {
     /** Resets GUI */
     private JButton clear;
     
-    /** Where the TaskList itself is displayed */
+    /** Where the Task List itself is displayed */
     private JTextPane taskPane;
     
-    /** Allow for scrolling through TaskList */
+    /** Allow for scrolling through Task List */
     private JScrollPane taskScrollPane;
     
     /** Array of Strings representing the options for type of Task */
@@ -161,7 +161,7 @@ public class TaskManagerGUI extends JFrame {
         con.gridx = 0;
         con.gridy = 0;
         rightPan = new JPanel(new GridBagLayout());
-        rightHead = new JLabel("Overall TaskList");
+        rightHead = new JLabel("Overall Task List");
         rightPan.add(rightHead, con);
         // add text/scroll pane on right side
         con.gridy++;
@@ -194,8 +194,8 @@ public class TaskManagerGUI extends JFrame {
                            String type = (String) typeBox.getSelectedItem(); // get type input
                            Task t = new Task(name, hr*60 + min, type); // create a Task, storing time internally as total # minutes only
                            if (isDuplicate(t)) { // check if it is a duplicate
-                               outputLabel.setText("Add result:  exact same Task already in TaskList");
-                           } else {  // getting here means that exact same Task is not already in TaskList (matching name and time and type)
+                               outputLabel.setText("Add result:  exact same Task already in Task List");
+                           } else {  // getting here means that exact same Task is not already in Task List (matching name and time and type)
                                tasks.add(t); // add Task to list
                                Collections.sort(tasks, new TaskTypeComparator()); // sort tasks by type aka time of day
                                taskPane.setText(printList()); // print the list in the text pane
@@ -271,7 +271,7 @@ public class TaskManagerGUI extends JFrame {
         bottomPan.add(clear);
         bottomPan.setOpaque(true);
         
-        welcome = new JLabel("Welcome to TaskManager!", SwingConstants.CENTER);
+        welcome = new JLabel("Welcome to Task Manager!", SwingConstants.CENTER);
         
         formatAll(); // format all components with Fonts
         
@@ -301,8 +301,8 @@ public class TaskManagerGUI extends JFrame {
     }
     
     /**
-     * Method to print the contents of the TaskList, with a new line between elements
-     * @return the String summary of the TaskList
+     * Method to print the contents of the Task List, with a new line between elements
+     * @return the String summary of the Task List
      */
     public String printList() {
         String s = "";
@@ -347,7 +347,7 @@ public class TaskManagerGUI extends JFrame {
     public boolean checkEmpty(String start, String name) {
         boolean b = false;
         if (tasks.size() == 0) {
-            outputLabel.setText(start + "TaskList is empty");
+            outputLabel.setText(start + "Task List is empty");
             b = true;
         } else if (name.length() == 0) {
             outputLabel.setText(start + "invalid Name input");
@@ -357,7 +357,7 @@ public class TaskManagerGUI extends JFrame {
     }
     
     /**
-     * Method to find a task in the TaskList for searching or removing
+     * Method to find a task in the Task List for searching or removing
      * If > 1 Task with same name, first one found is returned
      * @param name the Task name to find
      * @return the Task, or null if it is not found
