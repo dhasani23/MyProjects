@@ -399,13 +399,13 @@ public class TaskManagerGUI extends JFrame {
 
     /** Display the GUI */
     public static void main(String[] args) {
-        TaskManagerGUI applet = new TaskManagerGUI();
-        applet.setTitle("Task Manager");
-        applet.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        applet.setLayout(new BorderLayout());
-        javax.swing.SwingUtilities.invokeLater(()->applet.configureGUI());
-        applet.pack();
-        applet.setSize(875,500);
-        applet.setVisible(true);
+        TaskManagerGUI tm = new TaskManagerGUI();
+        tm.setTitle("Task Manager");
+        tm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        tm.setLayout(new BorderLayout());
+        javax.swing.SwingUtilities.invokeLater(()->tm.configureGUI());
+        tm.pack();
+        tm.setSize(875,500);
+        tm.setVisible(true);
     } 
 }
