@@ -3,4 +3,4 @@ Each task consists of a title, estimated time to complete, and type (morning, af
 Tasks are continuously displayed in sorted order (by type).
 You can run TaskManagerGUI.java to launch the GUI.
 
-![](/TaskManager/Screenshot.JPG)
+![](/TaskManager/picture.JPG)
