@@ -400,7 +400,7 @@ public class TaskManagerGUI extends JFrame {
     /** Display the GUI */
     public static void main(String[] args) {
         TaskManagerGUI applet = new TaskManagerGUI();
-        applet.setTitle("TaskManager");
+        applet.setTitle("Task Manager");
         applet.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         applet.setLayout(new BorderLayout());
         javax.swing.SwingUtilities.invokeLater(()->applet.configureGUI());
