@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Financial Calculator</title>
+
+  <link rel="icon" href="https://image.flaticon.com/icons/svg/570/570126.svg" />
+
+  <!-- update the version number as needed -->
+  <script defer src="https://www.gstatic.com/firebasejs/7.17.2/firebase-app.js"></script>
+  <!-- include only the Firebase features as you need -->
+  <script defer src="https://www.gstatic.com/firebasejs/7.17.2/firebase-auth.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/7.17.2/firebase-database.js"></script>
+
+  <!-- initialize the SDK after all desired features are loaded -->
+  <script defer src="./js/init-firebase.js"></script>
+
+  <!-- Materialize stuff -->
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
+  <title>Starter Template - Materialize</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
+
+</head>
+
+<body>
+
+  <script>
+      document.addEventListener('DOMContentLoaded', function () {
+      // The Firebase SDK is initialized and available here!
+
+      firebase.auth().onAuthStateChanged(user => { });
+      firebase.database().ref('/path/to/ref').on('value', snapshot => { });
+      //firebase.messaging().requestPermission().then(() => { });
+      //firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
+      document.getElementById('logout').style.display = 'none';
+    });
+  </script>
+
+  <!-- Nav bar -->
+  <nav class="light-blue lighten-1" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-graph-up" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 0h1v16H0V0zm1 15h15v1H1v-1z"/>
+      <path fill-rule="evenodd" d="M14.39 4.312L10.041 9.75 7 6.707l-3.646 3.647-.708-.708L7 5.293 9.959 8.25l3.65-4.563.781.624z"/>
+      <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4h-3.5a.5.5 0 0 1-.5-.5z"/>
+    </svg></a>
+      <ul class="right">
+        <li><a href="#" class="login" id="login">Login</a></li>
+        <li><a href="#" class="logout" id="logout">Log Out</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="popup">
+    <div class="popup-content">
+      <h5><b>Login</b></h5>
+      <div class="popup-close"><a class="btn-floating waves-effect red"><i class="material-icons"
+            id="close">close</i></a></div>
+      <input type="text" placeholder="Email" id="email">
+      <input type="password" placeholder="Password" id="password">
+      <small style="color:red" id="login-error-message">Incorrect Login Credentials</small>
+      <br>
+      <a class="waves-effect waves-light btn" id="login_button">Login</a>
+      <!-- <a href="#" class="button" id="login_button">Login</a> -->
+    </div>
+  </div>
+
+  <script>
+        document.getElementById("close").addEventListener("click", function () {  // close pop-up window
+        document.querySelector(".popup").style.display = "none";
+      });
+
+        document.getElementById("logout").addEventListener("click", function () { // listener for logout
+        firebase.auth().signOut().then(function () { //sign out and print to console
+        console.log("Sign out successful");
+        document.getElementById('logout').style.display = 'none';
+        document.getElementById('login').style.display = '';
+      }).catch(function (error) {
+        console.log(error);
+      });
+    })
+
+      document.getElementById("login").addEventListener("click", function () { //listener for login UI
+      document.getElementById('login-error-message').style.display = 'none'; //hide login error message
+      document.querySelector(".popup").style.display = "flex"; //render popup screen
+      document.getElementById("login_button").addEventListener("click", function () { //listener for final login button
+        let username = document.getElementById("email").value;
+        let password = document.getElementById("password").value;
+        firebase.auth().signInWithEmailAndPassword(username, password).then(function () {
+          var user = firebase.auth().currentUser;
+          console.log("Sign in Successful");
+          document.querySelector(".popup").style.display = "none";
+          document.getElementById('login').style.display = 'none';
+          document.getElementById('logout').style.display = '';
+          email = user.email;
+          uid = user.uid; // The user's ID, unique to the Firebase project. Do NOT use
+          // this value to authenticate with your backend server, if
+          // you have one. Use User.getToken() instead.
+          console.log(email);
+          console.log(uid);
+        }).catch(function (error) {
+          console.log(error);
+          document.getElementById('login-error-message').style.display = ''; //show login error message
+          document.getElementById('logout').style.display = 'none';
+          document.getElementById('login').style.display = '';
+        });
+      })
+    });
+  </script>
+
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <br><br>
+      <h1 class="header center orange-text">Simplified Investing</h1>
+      <div class="row center">
+        <h5 class="header col s12 light">See how you can let your money do the work now, so you can cash in later.</h5>
+      </div>
+	    
+      <br><br>
+
+    </div>
+  </div>
+
+      <div class="container">
+      <div class="row">
+      <div class="col s12 m4 l3">
+      <div class="container">
+        <h5 class="header col s12 light">Find your projected return!</h5>
+        <br>
+        <div class="row">
+          <form class="col s12" action="#">
+            <div class="row">
+              <div class="input-field inline">
+                <i class="material-icons prefix">attach_money</i>
+                <textarea id="textarea1" class="materialize-textarea"></textarea>
+                <label for="textarea1">Initial Investment</label>
+              </div>
+           
+              <div class="input-field inline">
+                <i class="material-icons prefix">attach_money</i>
+                <textarea id="textarea2" class="materialize-textarea"></textarea>
+                <label for="textarea2">Monthly Contribution</label>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <form action="#">
+          <p>
+            Saving
+          </p>
+          <p>
+            <label>
+              <input id="rad1" type="radio" name="group1"/>
+              <span>Typical Savings Account</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input id="rad2" type="radio" name="group1"/>
+              <span>Capital One 360 Performance Savings Account</span>
+            </label>
+          </p>
+          <p>
+            Investing
+          </p>
+          <p>
+            <label>
+              <input id="rad3" type="radio" name="group2"/>
+              <span>Low Risk/Yield</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input id="rad4" type="radio" name="group2"/>
+              <span>Low-Mid Risk/Yield</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input id="rad5" type="radio"  name="group2"/>
+              <span>Mid Risk/Yield</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input id="rad6" type="radio" name="group2"/>
+              <span>Mid-High Risk/Yield</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              <input id="rad7" type="radio" name="group2"/>
+              <span>High Risk/Yield</span>
+            </label>
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <br><br>
+      <div class="col s12 m8 l9"> 
+        <div class="chart_container" style="display: inline-block;">
+		      <canvas id="myChart" width="800px" height="600px"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+	<script src="js/makeChart.js"></script>/
+  <script>
+
+      document.getElementById("rad1").addEventListener("click", function() {
+            chart.data.datasets[0].data = makeChart(0.16/12, 12, false, 0); //low-interest savings account
+            chart.update();
+      });
+
+      document.getElementById("rad2").addEventListener("click", function() {
+            chart.data.datasets[0].data = makeChart(0.8/12, 12, false, 0); //high-interest savings account
+            chart.update();
+      });
+
+      document.getElementById("rad3").addEventListener("click", function() {
+            chart.data.datasets[1].data = makeChart(1.54, 2, true, 1); //all bonds fund
+            chart.update();
+      });
+
+      document.getElementById("rad4").addEventListener("click", function() {
+            chart.data.datasets[1].data = makeChart(2.45, 2, true, 2); //mostly bonds fund
+            chart.update();
+      });
+
+      document.getElementById("rad5").addEventListener("click", function() {
+            chart.data.datasets[1].data = makeChart(3.57, 2, true, 3); //some bonds fund
+            chart.update();
+      });
+
+      document.getElementById("rad6").addEventListener("click", function() {
+            chart.data.datasets[1].data = makeChart(8.76, 1, true, 4); //mostly stocks fund
+            chart.update();
+      });
+
+      document.getElementById("rad7").addEventListener("click", function() {
+            chart.data.datasets[1].data = makeChart(9.74, 1, true, 5); //all stocks fund
+            chart.update();
+      });
+
+      var ctx = document.getElementById('myChart').getContext('2d');
+      var chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ["2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030", "2031", "2032", "2033",   "2034", "2035", "2036", "2037", "2038", "2039", "2040", "2041", "2042", "2043", "2044", "2045", "2046", "2047",
+                     "2048", "2049", "2050", "2051", "2052", "2053", "2054", "2055", "2056", "2057", "2058", "2059", "2060", "2061",
+                     "2062", "2063", "2064", "2065", "2066", "2067", "2068", "2069", "2070", "2071", "2072", "2073", "2074", "2075"],
+                datasets: [{
+                    label: "Saving ($)",
+                    borderColor: 'rgb(41, 182, 246)',
+                    fill: false,
+                    data: [],
+                    pointBackgroundColor: "rgb(41, 182, 246)",
+                },
+                {
+                  label: "Investing ($)",
+                  borderColor: 'rgb(255, 152, 0)',
+                  pointBackgroundColor: 'rgb(255, 152, 0)',
+                  fill: false,
+                  data: [],
+                }
+                ]
+            },
+            options: {
+              tooltips: {
+                    mode: 'index',
+                    intersect: false
+                 },
+                 hover: {
+                    mode: 'index',
+                    intersect: false
+                 },
+              title: {
+                    display: true,
+                    text: 'Growth of Investment',
+                    fontSize: 22,
+                    fontColor: 'black',
+                    fontStyle: 'bold',
+
+                  },
+              responsive: false,
+              legend: {
+              display: true,
+              },
+              scales: {
+                  xAxes: [{
+                    scaleLabel: {
+                      display: true,
+                      labelString: 'Year',
+                      fontSize: 16,
+                      fontColor: 'black',
+                      fontStyle: 'bold',
+                    },
+                    ticks: {
+                      fontSize: 14,
+                      fontColor: 'black',
+                    }
+                  }],
+                  yAxes: [{
+                    scaleLabel: {
+                      display: true,
+                      labelString: 'Value ($)',
+                      fontSize: 16,
+                      fontColor: 'black',
+                      fontStyle: 'bold',
+                    },
+                    ticks: {
+                      fontSize: 14,
+                      fontColor: 'black',
+                    }
+                  }],
+                } 
+            }
+          });
+
+  </script>   
+        </div>
+        </div>
+        <br><br>
+
+    <footer class="page-footer orange">
+      <div class="container">
+        <div class="row">
+          <div class="">
+            <h5 class="white-text">Why invest?</h5>
+            <p class="grey-text text-lighten-4">
+              Investing is a great way to store some money away and let it grow over time. There are a bunch of different ways to invest your money like stocks, mutual funds, and bonds. If you don’t know what those are, that is okay! Stocks are shares or a very small part ownership of a company. Mutual funds are a collection of stocks grouped together into one portfolio. Bonds are a loan to a company or the government that pays you back at a constant, usually lower, rate. Any of these options can grow your money in incredible ways if you give it enough time. Check out our interactive graph to see for yourself!
+              </p>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <div class="container">
+          Created by Andrew Schuck, Cooper Grace, David Hasani, Grant Tostenrud, Tony Li
+        <!-- <a class="orange-text text-lighten-3" href="#">Extra link</a> -->
+        </div>
+      </div>
+    </footer>
+
+    <!--  Scripts-->
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="js/materialize.js"></script>
+    <script src="js/init.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+
+</body>
+
+</html>
