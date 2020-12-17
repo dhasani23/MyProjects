@@ -218,37 +218,37 @@
   <script>
 
       document.getElementById("rad1").addEventListener("click", function() {
-            chart.data.datasets[0].data = makeChart(0.16/12, 12); //low-interest savings account
+            chart.data.datasets[0].data = makeChart(0.16/12, 12, false, 0); //low-interest savings account
             chart.update();
       });
 
       document.getElementById("rad2").addEventListener("click", function() {
-            chart.data.datasets[0].data = makeChart(0.8/12, 12); //high-interest savings account
+            chart.data.datasets[0].data = makeChart(0.8/12, 12, false, 0); //high-interest savings account
             chart.update();
       });
 
       document.getElementById("rad3").addEventListener("click", function() {
-            chart.data.datasets[1].data = makeChart(1.54, 2); //all bonds fund
+            chart.data.datasets[1].data = makeChart(1.54, 2, true, 1); //all bonds fund
             chart.update();
       });
 
       document.getElementById("rad4").addEventListener("click", function() {
-            chart.data.datasets[1].data = makeChart(2.45, 2); //mostly bonds fund
+            chart.data.datasets[1].data = makeChart(2.45, 2, true, 2); //mostly bonds fund
             chart.update();
       });
 
       document.getElementById("rad5").addEventListener("click", function() {
-            chart.data.datasets[1].data = makeChart(3.57, 2); //some bonds fund
+            chart.data.datasets[1].data = makeChart(3.57, 2, true, 3); //some bonds fund
             chart.update();
       });
 
       document.getElementById("rad6").addEventListener("click", function() {
-            chart.data.datasets[1].data = makeChart(8.76, 1); //mostly stocks fund
+            chart.data.datasets[1].data = makeChart(8.76, 1, true, 4); //mostly stocks fund
             chart.update();
       });
 
       document.getElementById("rad7").addEventListener("click", function() {
-            chart.data.datasets[1].data = makeChart(9.74, 1); //all stocks fund
+            chart.data.datasets[1].data = makeChart(9.74, 1, true, 5); //all stocks fund
             chart.update();
       });
 
@@ -327,8 +327,6 @@
             }
           });
 
-      //End David's Section
-
   </script>   
         </div>
         </div>
@@ -339,10 +337,8 @@
         <div class="row">
           <div class="">
             <h5 class="white-text">Why invest?</h5>
-		Investing is a great and easy way to store some money away and let it grow over time. There are a bunch of different ways to invest your money like stocks, mutual funds, and bonds. 
-		If you don’t know what those are, that is okay! Stocks are like shares or a very small part ownership of a company. 
-		Mutual funds are a collection of stocks grouped together into one portfolio. Bonds are a loan to a company or the government that pays you back at a constant, usually lower, rate. 
-		Any of these options can grow your money in incredible ways if you give it enough time. Check out our interactive graph to see for yourself!
+            <p class="grey-text text-lighten-4">
+              Investing is a great way to store some money away and let it grow over time. There are a bunch of different ways to invest your money like stocks, mutual funds, and bonds. If you don’t know what those are, that is okay! Stocks are shares or a very small part ownership of a company. Mutual funds are a collection of stocks grouped together into one portfolio. Bonds are a loan to a company or the government that pays you back at a constant, usually lower, rate. Any of these options can grow your money in incredible ways if you give it enough time. Check out our interactive graph to see for yourself!
               </p>
           </div>
         </div>
