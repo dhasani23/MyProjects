@@ -12,7 +12,7 @@ function makeChart(interestRate, compoundingFrequency, isInvesting, riskLevel) {
     var monthlyPay = parseInt(document.getElementById('textarea2').value,10);
 
     while (balances.length != 56) { // populate balances with compount interest formula + monthly contributions
-      balances[year] = ((principal*(interestRate**(compoundingFrequency*year))) + monthlyPay*(((interestRate**(compoundingFrequency*year))-1)/(((interestRate**exponent)-1)))).toFixed(2);
+      balances[year] = Math.round((principal*(interestRate**(compoundingFrequency*year))) + monthlyPay*(((interestRate**(compoundingFrequency*year))-1)/(((interestRate**exponent)-1))));
       year++;
     }
 
@@ -68,7 +68,7 @@ function makeChart(interestRate, compoundingFrequency, isInvesting, riskLevel) {
             // ex. case 2: the portfolio balance for each of 5-7 random years is decreased by a random value b/w 5% and 20% (i.e. multiply by 0.95 to 0.80)
             var percentChange = ((Math.random()*(delta+1) + upperBound) / 100);
             // update portfolio balance to be some fraction of the previous year's balance
-            balances[yearsToDecline[i] - 2020] = balances[yearsToDecline[i] - 2020 - 1] * percentChange;
+            balances[yearsToDecline[i] - 2020] = Math.round(balances[yearsToDecline[i] - 2020 - 1] * percentChange);
         }
     }
     return balances;
