@@ -1,2 +1,2 @@
-# MyProjects
-Various projects in some different languages.
+# Some-Projects
+Some of my projects in some different languages.
